@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>omnomnom</title>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" type="text/css" href="/stylesheets/main.css"> 
+  <script src="/javascripts/jquery.js"></script>
+</head>
+<body>
+  <main>
+    <div class="container">
+      <div id="left_leaf">
+        <div class="image-content">
+          <a href="/"><img class="logo" src="/favicon.ico"></a>
+          <ul id="logo-text">
+            <li>
+              <h2>Simple</h2>
+            </li>
+            <li>
+              <h2>Nutrition</h2>
+            </li>
+            <li>
+              <h2>Planner</h2>
+            </li>
+          </ul>
+        </div>
+        <div class="recipes column">
+          <h1>Recipes</h1>
+          <%@database.recipes.each do |recipe|%>
+            <div class="recipe_list_row">
+              <a href="/recipe/<%=recipe[:id]%>"><p><%= "#{recipe[:id]} #{recipe[:name]}"%></p></a>
+              <form method="POST" action="/recipe/<%= recipe[:id]%>/delete">
+                <button type="submit" class="delete"></button>
+              </form>
+            </div>
+          <% end%>
+          
+        <form method="GET" action="/recipes/new">
+          <button type="submit" id="create_recipe">create new recipe</button>
+          <button type="submit" formmethod = "POST" formaction="/recipes/delete">delete all recipes</button>
+
+        <button type="submit" formmethod = "POST" formaction="/logout">sign out</button>
+        </form>
+        </div>
+        <div class="meal_plans column">
+          <h1>Meal Plans</h1>
+          <%== @database.list_meal_plans(@user_id)%>
+          <form method="GET" action="/user/<%=@user_id%>/meal-plans/new">
+            <button type="submit" id="create_meal_plan">create new meal plan</button>
+        </form>
+        </div>
+      </div>
+      <div class="yielded_content">
+        <%== yield %>
+      </div>
+
+      <div id="right_leaf">
+        <%== yield_content :right_leaf %>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
+

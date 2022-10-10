@@ -1,0 +1,102 @@
+<% content_for :right_leaf do %>
+	<section class="image-content">
+		<h1>Meal Plan: <%= @meal_plan[:name]%></h1>
+		<img class="main_image" src=<%= @meal_plan[:image_url]%>>
+		<ul>
+			<li>
+				<span><a href="/meal-plans/<%= @meal_plan_id%>/edit">edit meal plan info</a></span>
+			</li>
+		</ul>
+		
+	</section>
+	<h2>Recipes: </h2>
+	<div class="indent">
+		<p class="disclaimer bold">**Click recipe to adjust number of servings for meal plan</p>
+		<p class="disclaimer">**EX: 0.5 means you plan to eat one half of the recipe over the course of the meal plan.</p>
+	</div>
+	<div id="meal_plan_recipes">
+		<% counter = 0%>
+		<% @recipes.each do |recipe_hash|%>
+		<ul>
+			<li>
+				<p id="recipe_quantity_button_<%=counter%>"><%=recipe_hash["name"]%></p>
+				<form id="recipe_quantity_form_<%=counter%>" method="POST" action="/meal-plans/<%=@meal_plan_id%>/recipes/<%=recipe_hash["recipe_id"]%>/update_quantity" class="recipe_quantity_form">
+					<label>
+	                Servings:
+	                <input type="number" step="0.01" id="num_servings/<%=recipe_hash["recipe_id"]%>" value="<%=recipe_hash["quantity"]%>" max="100" min=0 name="num_servings/<%=recipe_hash["recipe_id"]%>">
+	              </label>
+				</form>
+			<script>
+	          $(function(){
+	              $('.recipe_quantity_form').hide();
+	            });
+
+	          $(function(){
+	            $('#recipe_quantity_button_<%=counter%>').on('click', function(){
+	              $('#recipe_quantity_form_<%=counter%>').slideToggle(150);
+	            });
+	          });
+	          <% counter += 1%>
+	        </script>
+			</li>
+		</ul>
+		<% end %>
+	</div>
+<form method="GET" action="/user/<%=@user_id%>/meal-plans/<%=@meal_plan_id%>/add_recipes">
+	<button type="submit">Add/Remove Recipes</button>
+</form>
+<h1>Nutrition Summary</h1>
+<table class="detailed_nutrition_table">
+	<thead>
+		<tr>
+		  <td>Recipe Name</td>
+		  <td>Servings</td>
+		  <td>Calories</td>
+		  <td>Total Fat(g)</td>
+		  <td>Saturated Fat(g)</td>
+		  <td>Sodium (mg)</td>
+		  <td>Carbs(g)</td>
+		  <td>Protein(g)</td>
+		</tr>
+	</thead>
+	<tbody>
+		<% @recipes.each do |recipe_hash| %>
+		<tr>
+			<td><%=recipe_hash["name"]%></td>
+			<% recipe_totals = @database.calculate_nutrition_totals(recipe_hash["recipe_id"], recipe_hash["quantity"])%>
+			  <td><%=recipe_hash["quantity"]%></td>
+	          <td><%=recipe_totals[:calories]%></td>
+	          <td><%=recipe_totals[:total_fat]%></td>
+	          <td><%=recipe_totals[:saturated_fat]%></td>
+	          <td><%=recipe_totals[:sodium]%></td>
+	          <td><%=recipe_totals[:carbohydrate]%></td>
+	          <td><%=recipe_totals[:protein]%></td>
+        </tr>
+
+		<% end%>
+		<tfoot>
+			<tr>
+				<td>Totals:</td>
+				<td> </td>
+				<td><%= @database.total_meal_plan_calories(@meal_plan_id)%></td>
+				<td><%= @database.total_meal_plan_fat(@meal_plan_id)%></td>
+				<td><%= @database.total_meal_plan_sat_fat(@meal_plan_id)%></td>
+				<td><%= @database.total_meal_plan_sodium(@meal_plan_id)%></td>
+				<td><%= @database.total_meal_plan_carbs(@meal_plan_id)%></td>
+				<td><%= @database.total_meal_plan_protein(@meal_plan_id)%></td>
+			</tr>
+			<tr>
+				<td><a href="https://netrition.com/pages/reference-values-for-nutrition-labeling">%Daily Value (2000 cal)</a></td>
+				<td> </td>
+				<td><%=((@database.total_meal_plan_calories(@meal_plan_id) / 2000.0)* 100).round(0) %>%</td>
+          		<td><%=((@database.total_meal_plan_fat(@meal_plan_id) / 78.0)*100).round(1) %>% </td>
+          		<td><%=((@database.total_meal_plan_sat_fat(@meal_plan_id) / 20.0)*100).round(1) %>%</td>
+          		<td><%=((@database.total_meal_plan_sodium(@meal_plan_id) / 2300.0)* 100).round(2) %>%</td>
+          		<td><%=((@database.total_meal_plan_carbs(@meal_plan_id) / 275.0)* 100).round(1) %>%</td>
+          		<td><%=((@database.total_meal_plan_protein(@meal_plan_id) / 50)* 100).round(1) %>%</td>
+			</tr>
+		</tfoot>
+
+	</tbody>
+</table>
+<% end %>

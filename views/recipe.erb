@@ -1,0 +1,172 @@
+<% content_for :right_leaf do %>
+  <section class="image-content">
+    <h1><%= @recipe[:name]%></h1>
+    <img class="main_image" src=<%= @recipe[:image_url]%>>
+    <ul>
+      <li>
+        <p>Category: <%= @recipe[:category]%></p>
+      </li>
+      <li>
+        <span><a href="/recipe/<%= @recipe[:id]%>/edit">edit recipe info</a></span>
+      </li>
+    </ul>
+
+  </section>
+  <section class="recipe_ingredients">
+    <h2>Ingredients </h2>
+    <div class="indent">
+      <p class="disclaimer bold">**Click ingredient to adjust quantity</p>
+    </div>
+    <ol class="recipe_ingredients"><% counter = 1%>
+    <% @database.ingredients(@recipe[:id]).each do |tuple|%>
+      <li>
+        <p id="ingredient_summary_button_<%=counter%>"><%=tuple["name"]%></p>
+        <script>
+          $(function(){
+              $('.ingredient_summary').hide();
+            });
+
+          $(function(){
+            $('#ingredient_summary_button_<%=counter%>').on('click', function(){
+              $('#ingredient_summary_<%=counter%>').slideToggle(150);
+            });
+          });
+        </script>
+        <form method='POST' action='/recipe/<%=tuple["recipe_id"]%>/ingredient/<%=tuple["ingredient_id"]%>/delete'>
+          <button type='submit' class='delete'></button>
+        </form>
+        <div class="ingredient_summary" id="ingredient_summary_<%=counter%>">
+          <div class="row">
+            <form method="POST" action="/recipe/<%=@recipe[:id]%>/ingredient/<%=tuple["ingredient_id"]%>/update-ingredient-quantity">
+              <label>
+                Servings: 
+                <input type="number" step="0.01" id="num_servings/<%=tuple["ingredient_id"]%>" value="<%=tuple["num_servings"]%>" max="100" min=0 name="num_servings/<%=tuple["ingredient_id"]%>">
+              </label>
+            </form>
+            <p>Quantity: <%=tuple["num_servings"].to_f * 100.to_f%>g</p>
+            
+          </div>
+        </div>
+        <%counter += 1%>
+      </li>
+    <!-- tuple: ["id", "ingredient_id", "num_servings", "recipe_id", "id", "name", "calories"] -->
+    <% end %>
+    </ol>
+    <a href="/recipe/<%=@recipe[:id]%>/add-ingredients">ADD INGREDIENTS</a>
+  </section>
+
+  <section class="nutrition-summary">
+    <h2>Nutrition Summary</h2>
+    <table class="detailed_nutrition_table">
+      <thead>
+        <tr>
+          <td>Name</td>
+          <td>Quantity(g)</td>
+          <td>Calories</td>
+          <td>Total Fat(g)</td>
+          <td>Saturated Fat(g)</td>
+          <td>Sodium (mg)</td>
+          <td>Carbs(g)</td>
+          <td>Protein(g)</td>
+        </tr>
+      </thead>
+      <tbody>
+        <% @database.ingredients(@recipe[:id]).each do |ingredient|%>
+        
+        <tr>
+          <td>
+            <%=ingredient["name"] || "0"%>
+          </td>
+          <td>
+            <%=ingredient["num_servings"].to_f * 100 || "0"%>
+          </td>
+          <td>
+            <%=(ingredient["calories"].to_f * ingredient["num_servings"].to_f).round(0) || "0"%>
+          </td>
+          <td>
+            <%=(ingredient["total_fat"].to_f * ingredient["num_servings"].to_f ).round(3)|| "0"%>
+          </td>
+          <td>
+            <%=(ingredient["saturated_fat"].to_f * ingredient["num_servings"].to_f).round(3) || "0"%>
+          </td>
+          <td>
+            <%=(ingredient["sodium"].to_f * ingredient["num_servings"].to_f).round(2) || "0"%>
+          </td>
+          <td>
+            <%=(ingredient["carbohydrate"].to_f * ingredient["num_servings"].to_f).round(1) || "0"%>
+          </td>
+          <td>
+            <%=(ingredient["protein"].to_f * ingredient["num_servings"].to_f).round(1) || "0"%>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+      <tfoot>
+        <% recipe_totals = @database.calculate_nutrition_totals(@recipe[:id])%>
+        <tr>
+          <td>Totals:</td>
+          <td></td>
+          <td><%=recipe_totals[:calories]%></td>
+          <td><%=recipe_totals[:total_fat]%></td>
+          <td><%=recipe_totals[:saturated_fat]%></td>
+          <td><%=recipe_totals[:sodium]%></td>
+          <td><%=recipe_totals[:carbohydrate]%></td>
+          <td><%=recipe_totals[:protein]%></td>
+        </tr>
+        <tr>
+          <td><a href="https://netrition.com/pages/reference-values-for-nutrition-labeling">%Daily Value (2000 cal)</a></td>
+          <td></td>
+          <td><%=((recipe_totals[:calories] / 2000)* 100).round(0) %>%</td>
+          <td><%=((recipe_totals[:total_fat] / 78.0)*100).round(1) %>% </td>
+          <td><%=((recipe_totals[:saturated_fat] / 20.0)*100).round(1) %>%</td>
+          <td><%=((recipe_totals[:sodium] / 2300.0)* 100).round(2) %>%</td>
+          <td><%=((recipe_totals[:carbohydrate] / 275.0)* 100).round(1) %>%</td>
+          <td><%=((recipe_totals[:protein] / 50)* 100).round(1) %>%</td>
+        </tr>
+      </tfoot>
+    </table>
+  </section>
+  
+  <section class="recipe_instructions">
+    <div id="view_instructions_container">
+      <h2 id="instructions_header">Instructions</h2>
+      <button id='edit_instructions_button' type='submit'>Edit</button>
+      <% @database.recipe_instructions_lines(@recipe[:id]).each do |line|%>
+      <% if line == ""%>
+      <br>
+      <%end%>
+      <p class="instructions_line"><%=line%></p>
+      <% end%>
+    </div>
+    <div id="edit_instructions_container">
+      <div class="row">
+      <form method='POST' action='/recipe/<%=@recipe[:id]%>/instructions/update'>
+        <h2 id='instructions_header'>Instructions</h2>
+        <button id='save_changes_instructions_button' type='submit'>Save Changes</button>
+        <button id='cancel_edit' type='button'>Cancel</button>
+      </div>
+        <textarea id='instructions_text' name='instructions_text' maxlength='8000' cols='80' rows='20'><%=@database.recipe_instructions(@recipe[:id])%></textarea>
+      </form>
+    </div>
+
+    <script>
+      $(function(){
+        $('#edit_instructions_button').on('click', function(){
+          $('#edit_instructions_container').css({display: 'block'});
+          $('#view_instructions_container').css({display: 'none'});
+        });
+      });
+    </script>
+    <script>
+      $(function(){
+        $('#cancel_edit').on('click', function(){
+          $('#edit_instructions_container').css({display: 'none'});
+          $('#view_instructions_container').css({display: 'block'});
+        });
+      });
+
+    </script>
+    
+  </section>
+<% end %>
+

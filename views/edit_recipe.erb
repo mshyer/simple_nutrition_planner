@@ -1,0 +1,33 @@
+
+
+<% content_for :right_leaf do %>
+  <h1>Update Recipe Info</h1>
+  <form class="new_recipe" method="POST" action="/recipe/<%=@recipe[:id]%>/update">
+    <ul>
+      <li>
+        <label>
+          Recipe Name 
+          <input type="text" id= "recipe_name" name="recipe_name" value="<%= @recipe[:name] %>">
+        </label>   
+      </li>
+      <li>
+        <label>
+          Recipe Category 
+          <input type="text" id="recipe_category" name="recipe_category" value="<%= @recipe[:category] %>">
+        </label>
+      </li>
+      <li>
+        <label>
+          Recipe Image (URL only)
+          <input type="text" id="recipe_image_url" name="recipe_image_url"value="<%= @recipe[:image_url] %>">
+        </label>
+      </li>
+      <li>
+        <button type="submit">Update Recipe!</button>
+        <button formmethod="GET" formaction="/recipe/<%=@recipe[:id]%>">Cancel</button>
+        <input type="reset">
+      </li> 
+    </ul>
+
+  </form>
+<% end %>

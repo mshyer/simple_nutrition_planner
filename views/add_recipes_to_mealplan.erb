@@ -1,0 +1,31 @@
+<% content_for :right_leaf do %>
+	<h1>Meal Plan: <%= @meal_plan[:name]%></h1>
+	<h2>Current Recipes: (click to remove)</h2>
+	<% @recipes.each do |recipe_hash|%>
+
+	<ul>
+		<li class="meal_plan_selection_row">
+		<form method="POST" action="/user/<%=@user_id%>/meal-plans/<%=@meal_plan_id%>/remove_recipe/<%=recipe_hash["recipe_id"]%>">
+		<button type="submit">
+			<a href="/recipe/<%=recipe_hash["recipe_id"]%>"><p><%=recipe_hash["name"]%></p></a>
+			
+				<input type="checkbox" class="checkbox" checked></input>
+			
+		</button></form></li>
+	</ul>
+	<% end %>
+	<h2>Unselected Recipes (click to add)</h2>
+	<ul>
+	<%@database.unselected_recipes_for_mealplan(@meal_plan_id).each do |recipe_hash|%>
+		<li class="meal_plan_selection_row">
+		<form method="POST" action="/user/<%=@user_id%>/meal-plans/<%=@meal_plan_id%>/add_recipe/<%=recipe_hash["recipe_id"]%>">
+		<button type="submit">
+			<a href="/recipe/<%=recipe_hash["id"]%>"><p><%=recipe_hash["name"]%></p></a>
+			
+				<input type="checkbox" class="checkbox"></input>
+			
+		</button></form></li>
+     <% end%>
+    </ul>
+   	<a href="/user/<%=@user_id%>/meal-plans/<%=@meal_plan_id%>">Done</a>
+<% end %>

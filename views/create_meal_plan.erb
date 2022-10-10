@@ -1,0 +1,22 @@
+<% content_for :right_leaf do %>
+<h1>Creating Meal Plan</h1>
+<form method="POST" action="/user/<%=@user_id%>/meal-plans/new">
+	 <ul id="create_meal_plan_form_list">
+      <li>
+        <label>
+          Name 
+          <input type="text" id= "name" name="name">
+        </label>   
+      </li>
+      <li>
+        <label>
+          Recipe Image (URL only)
+          <input type="text" id="image_url" name="image_url">
+        </label>
+      </li>
+      <li>
+        <button type="submit">Done</button>
+      </li> 
+    </ul>
+</form>
+<% end %>

@@ -1,0 +1,245 @@
+@import url("reset.css");
+
+html {
+  font-family: calibri, helvetica, sans-serif;
+}
+* {
+  box-sizing: border-box;
+}
+h1 {
+  font-weight: bold;
+  font-size: 32px;
+
+}
+h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+p {
+  display: inline-block;
+}
+body {
+  margin: 10px 10px;
+  background: #893618;
+  font-size: 18px;
+  
+}
+
+button.delete {
+  background-image: url(../images/icon_delete.png);
+  background-size: cover;
+  display: inline-block;
+  margin-left: 3px;
+  /* background-color: blue; */
+  border: none;
+  height: 15px;
+  width: 15px;
+}
+button.delete:hover {
+  cursor: pointer;
+}
+
+img.logo {
+  width: 100px;
+  height: 100px;
+}
+
+.row,
+.recipe_list_row,
+.meal_plan_row,
+.meal_plan_selection_row {
+  display: block;
+}
+
+.recipe_list_row *,
+.meal_plan_row *,
+.meal_plan_selection_row * {
+  display: inline-block;
+}
+.meal_plan_row button {
+  
+  border: none;
+}
+.meal_plan_selection_row button {
+  background: #F3DEB3;
+  border: none;
+}
+.meal_plan_selection_row button:hover {
+  cursor: pointer;
+  background: teal;
+}
+.meal_plan_selection_row input[type=checkbox] {
+  pointer-events: none;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  flex-grow: 1;
+  min-height: 800px;
+}
+
+#left_leaf {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 5px;
+  min-width: 300px;
+  background: #F3DEB3;
+  border-right: 10px solid #893618;
+}
+#right_leaf {
+  box-sizing: border-box;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  min-width: 500px;
+  width: 100%;
+  background: #F3DEB3;
+}
+
+.recipe_ingredients li {
+  display: block;
+  margin-bottom: 10px;
+}
+.error {
+  background: yellow;
+}
+.detailed_nutrition_table {
+  width: 100%;
+}
+.detailed_nutrition_table tr * {
+  display: inline-block;
+}
+.detailed_nutrition_table td {
+  font-size: 10px;
+  width: 11%;
+}
+.detailed_nutrition_table tfoot tr {
+  border: none;
+}
+
+.recipe_ingredients form {
+  display: inline-block;
+}
+.ingredient_summary {
+  margin-left: 30px;
+}
+
+form.new_recipe ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+form.new_recipe ul li {
+  margin: 5px 0;
+}
+
+form.search_ingredients {
+  margin-top: 10px;
+}
+form.search_ingredients h1 {
+  margin-bottom: 5px;
+}
+
+img.main_image {
+  float: right;
+  margin-right: 50px;
+  display: inline-block;
+  width: 150px;
+  height: 150px;
+  border-radius: 8px;
+}
+
+section.image-content h1 {
+  display: inline-block;
+}
+#logo-text {
+  float: right;
+  margin: 10px 60px 0 0;
+}
+section.image-content ul {
+  display: block;
+  margin-left: 20px;
+  list-style: disc;
+}
+
+section.ingredients form {
+  display: inline-block;
+}
+
+table thead{
+  font-weight: bold;
+}
+
+td {
+  font-size: 16px;
+  width: 33%;
+  
+}
+tr {
+  border-bottom: 2px solid black;
+}
+th {
+  text-align: left;
+
+}
+tfoot td {
+  font-weight: bold;
+}
+
+section {
+  margin-bottom: 15px;
+}
+
+textarea {
+  background: #F3DEB3;
+  border: 1px solid black;
+  resize: none;
+  font-family: calibri, helvetica, sans-serif;
+  font-size: 16px;
+}
+.bold {
+  font-weight: bold;
+}
+
+.disclaimer {
+  font-size: 12px;
+}
+div.indent {
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+div.indent p {
+  display: block;
+}
+
+div#meal_plan_recipes ul {
+  font-size: 20px;
+  margin: 5px;
+}
+div#meal_plan_recipes li p:hover {
+  cursor: pointer;
+  background: teal;
+}
+
+ol.recipe_ingredients li p:hover {
+  cursor: pointer;
+  background: teal;
+}
+
+#edit_instructions_button,
+#instructions_header {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+#edit_instructions_container {
+  display: none;
+}
+
+#view_instructions_container p {
+  display: block;
+}

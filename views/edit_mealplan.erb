@@ -1,0 +1,27 @@
+
+
+<% content_for :right_leaf do %>
+  <h1>Updating meal plan <%=@meal_plan_id%></h1>
+  <form class="new_recipe" method="POST" action="/meal-plan/<%=@meal_plan_id%>/update">
+    <ul>
+      <li>
+        <label>
+          Name 
+          <input type="text" id= "meal_plan_name" name="meal_plan_name" value="<%= @meal_plan[:name] %>">
+        </label>   
+      </li>
+      <li>
+        <label>
+          Recipe Image (URL only)
+          <input type="text" id="image_url" name="image_url"value="<%= @meal_plan[:image_url] %>">
+        </label>
+      </li>
+      <li>
+        <button type="submit">Update!</button>
+        <button formmethod="GET" formaction="/user/<%=@user_id%>/meal-plans/<%=@meal_plan_id%>">Cancel</button>
+        <input type="reset">
+      </li> 
+    </ul>
+
+  </form>
+<% end %>

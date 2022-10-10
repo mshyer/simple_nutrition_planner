@@ -1,0 +1,31 @@
+<% content_for :right_leaf do %>
+	<form class="search_ingredients" method="POST" action="search_ingredients">
+		<h1>Search for an ingredient</h1>
+		<label>Lookup
+			<input type="search" name="search_ingredients" id="search_ingredients">
+		</label>
+		<button type="submit">Submit</button>
+	</form>
+	<% if @storage.search_results?%>
+
+		<h1>Search Results</h1>
+		<table>
+			<thead>
+
+				<tr>
+					<td>Ingredient Name</td>
+					<td>Calories (per 100g)</td>
+				</tr>
+			</thead>
+			<tbody>
+			<% count=0 %>
+			<% @pg_result.each do |row|%>
+				<% next if count >= 20%>
+				<%= list_ingredient_data(row) %>
+				<% count += 1 %>
+			<% end %>
+			 </tbody>
+		</table>
+		<% @storage.reset_search%>
+	<% end %>
+<% end %>

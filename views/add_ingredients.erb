@@ -1,0 +1,38 @@
+<% content_for :right_leaf do %>
+	<form class="search_ingredients" method="POST" action="/recipe/<%=@recipe[:id]%>/ingredient-search">
+		<% if !!@storage.error?%>
+		<div class="error">
+			<h2 class="error_message"><%=@storage.error%></h2>
+		</div>
+		<% end %>
+		<h2>Adding Ingredients to recipe: </h2>
+		<h1><%=@recipe[:name] %></h1>
+		<label>Lookup
+			<input type="search" name="search_ingredients" id="search_ingredients">
+		</label>
+		<button type="submit">Search</button>
+		<button type="submit" formaction="/recipe/<%=params[:id]%>" formmethod="GET">Cancel</button>
+	</form>
+	<% if @storage.search_results?%>
+
+		<h1>Search Results</h1>
+		<table>
+			<thead>
+
+				<tr>
+					<td>Ingredient Name</td>
+					<td>Calories (100g)</td>
+				</tr>
+			</thead>
+			<tbody>
+			<% count=0 %>
+			<% @pg_result.each do |row|%>
+				<% next if count >= 20%>
+				<%== list_ingredient_data(row) %>
+				<% count += 1 %>
+			<% end %>
+			 </tbody>
+		</table>
+		<% @storage.reset_search%>
+	<% end %>
+<% end %>
