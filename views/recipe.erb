@@ -6,10 +6,10 @@
       <li>
         <p>Category: <%= @recipe[:category]%></p>
       </li>
-      <li>
-        <span><a href="/recipe/<%= @recipe[:id]%>/edit">edit recipe info</a></span>
-      </li>
     </ul>
+    <form method="GET" action="/recipe/<%= @recipe[:id]%>/edit">
+        <button type="submit">edit recipe info</button>
+    </form>
 
   </section>
   <section class="recipe_ingredients">
@@ -52,7 +52,9 @@
     <!-- tuple: ["id", "ingredient_id", "num_servings", "recipe_id", "id", "name", "calories"] -->
     <% end %>
     </ol>
-    <a href="/recipe/<%=@recipe[:id]%>/add-ingredients">ADD INGREDIENTS</a>
+    <form method="GET" action="/recipe/<%=@recipe[:id]%>/add-ingredients">
+    <button type="submit">Add Ingredients</button>
+    </form>
   </section>
 
   <section class="nutrition-summary">

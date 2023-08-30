@@ -6,59 +6,6 @@ class SessionPersistence
     @session[:recipes] ||= []
   end
 
-  # def recipes
-  #   @session[:recipes]
-  # end
-
-  # def next_recipe_id
-  #   max = (@session[:recipes].map {|recipe| recipe[:id]}).max || 0
-  #   max + 1
-  # end
-
-  # def next_ingredient_id(recipe)
-  #   max = (recipe[:ingredients].map {|ingredient| ingredient[:id]}).max || 0
-  #   max + 1
-  # end
-
-  # def create_new_recipe(name, category, image_url)
-  #   @session[:recipes] << {
-  #           :name => name, 
-  #           :id => next_recipe_id, 
-  #           :ingredients => [],
-  #           :category => category,
-  #           :image_url => image_url
-
-  #           }
-  # end
-
-  # def delete_all_recipes
-  #   @session[:recipes] = []
-  # end
-
-  # def delete_recipe(id)
-  #   @session[:recipes].reject! {|recipe| recipe[:id] == id.to_i}
-  # end
-
-  # def get_recipe(id)
-  #   @session[:recipes].select {|recipe| recipe[:id] == id.to_i}[0]
-  # end
-
-  # def set_name(recipe, name)
-  #   recipe[:name] = name
-  # end
-
-  # def add_ingredient(recipe, ing_name, calories_per_serving = 0, servings = 1)
-  #   recipe[:ingredients] << 
-  #     {:name => ing_name, 
-  #     :id => next_ingredient_id(recipe), 
-  #     :calories_per_serving => calories_per_serving,
-  #     :servings => servings}
-  # end
-
-  # def delete_ingredient(recipe, ingredient_id)
-  #   recipe[:ingredients].reject! { |ingredient| ingredient[:id] == ingredient_id.to_i }
-  # end
-
   def temp_store_search_term(search)
     @session[:search] = search
   end

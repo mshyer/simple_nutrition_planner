@@ -382,17 +382,26 @@ post '/meal-plans/:meal_plan_id/recipes/:recipe_id/update_quantity' do
   redirect "/user/#{@user_id}/meal-plans/#{params[:meal_plan_id]}"
 end
 
+# load page to edit meal plan info
+
 get '/meal-plans/:meal_plan_id/edit' do
   @meal_plan_id = params[:meal_plan_id]
   @meal_plan = @database.get_meal_plan(@user_id, @meal_plan_id)
   erb :edit_mealplan, layout: :layout
 end
 
+# Update info for meal plan
 post '/meal-plan/:meal_plan_id/update' do
   @meal_plan_id = params[:meal_plan_id]
   name = params[:meal_plan_name]
   image_url = params[:image_url]
   @database.update_meal_plan(@meal_plan_id, name, image_url)
   redirect "/user/#{@user_id}/meal-plans/#{@meal_plan_id}"
-  
+end
+
+# delete all meal plans for a user
+
+post '/user/:user_id/meal-plans/delete-all' do
+  @database.delete_all_user_meal_plans(@user_id)
+  redirect "/"
 end

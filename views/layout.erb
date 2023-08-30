@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>omnomnom</title>
+  <title>Simple Nutrition Planner</title>
   <meta charset="utf-8" />
   <link rel="stylesheet" type="text/css" href="/stylesheets/main.css"> 
   <script src="/javascripts/jquery.js"></script>
@@ -28,7 +28,7 @@
           <h1>Recipes</h1>
           <%@database.recipes.each do |recipe|%>
             <div class="recipe_list_row">
-              <a href="/recipe/<%=recipe[:id]%>"><p><%= "#{recipe[:id]} #{recipe[:name]}"%></p></a>
+              <a href="/recipe/<%=recipe[:id]%>"><p><%= "#{recipe[:name]}"%></p></a>
               <form method="POST" action="/recipe/<%= recipe[:id]%>/delete">
                 <button type="submit" class="delete"></button>
               </form>
@@ -37,8 +37,10 @@
           
         <form method="GET" action="/recipes/new">
           <button type="submit" id="create_recipe">create new recipe</button>
-          <button type="submit" formmethod = "POST" formaction="/recipes/delete">delete all recipes</button>
-
+        </form>
+        <form method="POST" action="/recipes/delete" class="destructive">
+          <button type="submit"> delete all recipes</button>
+        </form>
         <button type="submit" formmethod = "POST" formaction="/logout">sign out</button>
         </form>
         </div>
@@ -47,7 +49,24 @@
           <%== @database.list_meal_plans(@user_id)%>
           <form method="GET" action="/user/<%=@user_id%>/meal-plans/new">
             <button type="submit" id="create_meal_plan">create new meal plan</button>
+          </form>
+          <form class="destructive" method="POST" action="/user/<%=@user_id%>/meal-plans/delete-all">
+            <button  type="submit">delete all meal plans</button>
+          </form>
         </form>
+        <script>
+          $(function() {
+            $("form.destructive").submit(function(event) {
+              event.preventDefault();
+              event.stopPropagation();
+
+              var ok = confirm("Are you sure? This cannot be undone!");
+              if (ok) {
+                this.submit();
+              }
+            });
+          });
+        </script>
         </div>
       </div>
       <div class="yielded_content">

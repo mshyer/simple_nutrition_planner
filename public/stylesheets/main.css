@@ -58,7 +58,6 @@ img.logo {
   display: inline-block;
 }
 .meal_plan_row button {
-  
   border: none;
 }
 .meal_plan_selection_row button {
@@ -219,6 +218,8 @@ div.indent p {
 div#meal_plan_recipes ul {
   font-size: 20px;
   margin: 5px;
+  list-style: disc;
+  margin-left: 30px;
 }
 div#meal_plan_recipes li p:hover {
   cursor: pointer;

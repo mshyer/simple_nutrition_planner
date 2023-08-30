@@ -2,12 +2,9 @@
 	<section class="image-content">
 		<h1>Meal Plan: <%= @meal_plan[:name]%></h1>
 		<img class="main_image" src=<%= @meal_plan[:image_url]%>>
-		<ul>
-			<li>
-				<span><a href="/meal-plans/<%= @meal_plan_id%>/edit">edit meal plan info</a></span>
-			</li>
-		</ul>
-		
+		<form method="GET" action="/meal-plans/<%= @meal_plan_id%>/edit">
+			<button type="submit">edit info</button>
+		</form>
 	</section>
 	<h2>Recipes: </h2>
 	<div class="indent">
@@ -25,6 +22,7 @@
 	                Servings:
 	                <input type="number" step="0.01" id="num_servings/<%=recipe_hash["recipe_id"]%>" value="<%=recipe_hash["quantity"]%>" max="100" min=0 name="num_servings/<%=recipe_hash["recipe_id"]%>">
 	              </label>
+	              <button type="submit">Update</button>
 				</form>
 			<script>
 	          $(function(){

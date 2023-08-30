@@ -25,15 +25,7 @@ class DatabasePersistence
     newlines = raw_text.split(/[\r\n][\r\n]/)
 
     newlines
-    
-    # newlines.each do |line|
-    #   if line == ""
-    #     result << "<br>"
-    #   else
-    #     result << "<p>#{line}</p>"
-    #   end
-    # end
-    # result
+  
   end
 
   def list_meal_plans(user_id)
@@ -159,7 +151,6 @@ class DatabasePersistence
     query(sql, id)
   end
 
-  # @database.add_ingredient(params[:recipe_id], @ingredient[1], @ingredient[2], params[:num_servings])
   def add_ingredient( recipe_id, ingredient_id, num_servings)
     sql = <<~SQL
     INSERT INTO recipes_ingredients (recipe_id, ingredient_id, num_servings)
@@ -185,10 +176,7 @@ class DatabasePersistence
   def calculate_nutrition_totals(recipe, quantity = 1)
     
     quantity = quantity.to_f
-    # quantity = 0.1
-    # puts "LETS SEE HEYA"
-    # p recipe
-    # p quantity
+
     calories = (total_recipe_calories(recipe) * quantity).round(0) || 0
     total_fat = (total_recipe_fat(recipe) * quantity).round(1) || 0
     saturated_fat = (total_recipe_sat_fat(recipe) * quantity).round(1) || 0
@@ -282,11 +270,6 @@ class DatabasePersistence
       array.inject(:*)
     end.sum.round(1)
   end
-  # <td><%=@database.total_recipe_calories(@recipe[:id])%></td>
-  # <td><%=@database.total_recipe_fat(@recipe[:id])%></td>
-  # <td><%=@database.total_recipe_sat_fat(@recipe[:id])%></td>
-  # <td><%=@database.total_recipe_sodium(@recipe[:id])%></td>
-  # <td><%=@database.total_recipe_carbs(@recipe[:id])%></td>
 
   def total_meal_plan_calories(meal_plan_id)
     recipes = recipes_for_mealplan(meal_plan_id)
@@ -456,7 +439,6 @@ class DatabasePersistence
     query(sql, recipe_id, ingredient_id)
   end
 
-  # delete_meal_plan(params[:user_id])
   def delete_meal_plan(user_id, meal_plan_id)
     sql = <<~SQL
     DELETE FROM meal_plans
@@ -523,10 +505,6 @@ class DatabasePersistence
   end
 
   def update_meal_plan(meal_plan_id, name, image_url)
-    puts "inside update method"
-    p meal_plan_id
-    p name
-    p image_url
     sql = <<~SQL
     UPDATE meal_plans
     SET name = $2
@@ -548,6 +526,14 @@ class DatabasePersistence
     @connection.exec(sql)
   end
 
+  def delete_all_user_meal_plans(user_id)
+    sql = <<~SQL
+    DELETE FROM meal_plans
+    WHERE user_id = $1;
+    SQL
+    query(sql, user_id)
+  end
+
   def update_meal_plan_recipe_quantity(meal_plan_id, recipe_id, quantity)
     sql = <<~SQL
     UPDATE meal_plans_recipes
@@ -556,4 +542,5 @@ class DatabasePersistence
     SQL
     query(sql, meal_plan_id, recipe_id, quantity)
   end
+
 end
