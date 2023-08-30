@@ -1,13 +1,13 @@
 # About
-![logo](./public/images/logo_beige.png)
+![logo](./public/Images/logo_beige.png)
 
 Simple Nutrition Planner is a tool for tracking nutrition and macronutrient goals.
 
-![home](./public/images/recipes.png)
+![home](./public/Images/recipes.png)
 Easily create recipes. Nutrition info is calculated automatically using an open-source dataset
 
 Combine recipes to make mealplans!
-![home](./public/images/mealplan.png)
+![home](./public/Images/mealplan.png)
 
 # Installation
 1. `git clone` the repo
